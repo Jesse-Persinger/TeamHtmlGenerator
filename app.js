@@ -11,6 +11,7 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 const { exit } = require("process");
 const Employee = require("./lib/Employee");
+const { Console } = require("console");
 
 
 // Write code to use inquirer to gather information about the development team members,
@@ -37,66 +38,90 @@ const Employee = require("./lib/Employee");
 // for the provided `render` function to work! ```
 
 
-inquirer
-    .prompt ([
+async function employeePromt() {
+    const { name, id, email, role } = await
+        inquirer
+            .prompt([
 
-        //Employee Info  
-        
-          {
-            name: 'Name',
-            message: 'New employee name',
-            default: "Null",
-        },
+                //Employee Info  
 
-        {
-            name: 'Id',
-            message: 'New employee Id',
-            default: "Null",
-        },
+                {
+                    name: 'name',
+                    message: 'New employee name',
+                    default: "Null",
+                },
 
-        {
-            name: 'Email',
-            message: 'New employee Email',
-            default: "Null",
-        },
+                {
+                    name: 'id',
+                    message: 'New employee Id',
+                    default: "Null",
+                },
 
-          {
-            type: 'list',
-            name: 'Role',
-            message: 'Roll of new employee?',
-            choices: ['Manager', 'Engineer', 'Intern'],
-          },
+                {
+                    name: 'email',
+                    message: 'New employee Email',
+                    default: "Null",
+                },
 
-          //Manager Info
+                {
+                    type: 'list',
+                    name: 'role',
+                    message: 'Roll of new employee?',
+                    choices: ['Manager', 'Engineer', 'Intern'],
+                },
+            ])
 
-          {
-            name: 'Office',
-            message: 'Office Number?',
-            default: "Null",
-            when: (answers) => answers.Role === Manager,
-        },
+    switch (role) {
+        case 'Manager':
+            console.log("The Man");
+            inquirer
+            .prompt([
+                {
+                    name: 'officeNumber',
+                    message: 'Office Number?',
+                    default: "Null",
+                },
+            ])
+            .then ((answers) => {
+                console.log(answers);
+            })
+            break;
 
-        {
-            name: 'Github',
-            message: 'Github User Name?',
-            default: "Null",
-        },
+        case 'Engineer':
+            console.log("Makes Stuff Good");
+            inquirer
+            .prompt([
+                {
+                    name: 'github',
+                    message: 'Github Account?',
+                    default: "Null",
+                },
+            ])
+            .then ((answers) => {
+                console.log(answers);
+            })
+            break;
 
-        {
-            name: 'School',
-            message: 'What school do/did you attend?',
-            default: "Null",
-        },
+        case 'Intern':
+            console.log("The Coffee");
+            inquirer
+            .prompt([
+                {
+                    name: 'school',
+                    message: 'What school did they attend?',
+                    default: "Null",
+                },
+            ])
+            .then ((answers) => {
+                console.log(answers);
+            })
+            break;
 
-        ])
-        .then(
-            (answers) => {
-                const Employee1 = new Engineer(answers.Name, answers.Id, answers.Email, answers.Github);
-                
-                console.log(Employee1);
+        default:
+            console.log("Opps");
+    }
+}
 
-            }
-        )
-    
-          
-        
+employeePromt();
+
+
